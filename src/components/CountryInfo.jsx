@@ -7,6 +7,7 @@ import sizes from "../util/screens";
 const CountryInfo = ({ duration }) => {
   const {
     gameStart,
+    mode,
     countryAnswered,
     country,
     answer,
@@ -115,7 +116,7 @@ const CountryInfo = ({ duration }) => {
         </div>
       </div>
 
-      <div className="country-properties">
+      <div className={`country-properties ${mode === "capitals" && "hidden"}`}>
         <div className="country-capital country-prop">
           <span>Capital City:</span>{" "}
           <span className="country-val">{country?.capital}</span>
@@ -143,11 +144,6 @@ const Wrapper = styled.div`
 
   min-width: 250px;
 
-  ${(props) => {
-    return {
-      marginTop: `${props.$answer === "" ? "" : "1.8rem"}`,
-    };
-  }}
   @media only screen and (max-width: ${sizes.large}) {
     grid-template-rows: 1fr;
   }

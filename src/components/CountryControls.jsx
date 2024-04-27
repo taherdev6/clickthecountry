@@ -4,10 +4,12 @@ import FaBackwardStep from "../icons/FaBackwardStep";
 import FaForwardStep from "../icons/FaForwardStep";
 import FaCheck from "../icons/FaCheck";
 import FaXmark from "../icons/FaXmark";
+import FaQuestion from "../icons/FaQuestion";
+import CheckBox from "./CheckBox";
 import { useGlobalContext } from "../context/context";
 import sizes from "../util/screens";
 const CountryControls = () => {
-  const { answer, setAnswer, countries, country, setCountry } =
+  const { answer, setAnswer, countries, country, setCountry, mode } =
     useGlobalContext();
   if (answer === "correct" || answer === "wrong") {
     setTimeout(() => {
@@ -16,42 +18,21 @@ const CountryControls = () => {
   }
   return (
     <Wrapper className="country-controls">
-      <div
-        className={`answer-right answer-box ${
-          answer === "correct" ? "" : "hidden"
-        }`}
-      >
-        <div>t</div>
-        <div>t</div>
-        <div>t</div>
-        <div className="check-box check-box-right">
-          <FaCheck color="#0f5132" />
-        </div>
-        <div>t</div>
-      </div>
-
-      <div
-        className={`answer-wrong answer-box ${
-          answer === "wrong" ? "" : "hidden"
-        }`}
-      >
-        <div>t</div>
-        <div>t</div>
-        <div>t</div>
-        <div className="check-box check-box-wrong">
-          <FaXmark color="#842029" />
-        </div>
-        <div>t</div>
-      </div>
       <span className={`find-country ${answer === "" ? "" : "hidden"}`}>
-        Find: <span className="country-name">{country?.name}</span>
+        Find:{" "}
+        <span className="country-name">
+          {mode === "capitals" ? country?.capital : country?.name}
+        </span>
       </span>
 
-      <img
-        src={country?.flag}
-        className={`my-flag ${answer === "" ? "" : "hidden"}`}
-      ></img>
+      <CheckBox isQuestion={mode === "capitals" ? "question" : false} />
 
+      {mode !== "capitals" && (
+        <img
+          src={country?.flag}
+          className={`my-flag ${answer === "" ? "" : "hidden"}`}
+        />
+      )}
       <div className={`country-btn-container ${answer === "" ? "" : "hidden"}`}>
         <button
           className="country-btn country-btn-back btn"
@@ -90,7 +71,8 @@ export default CountryControls;
 const Wrapper = styled.div`
   grid-column: country-flag-start / country-flag-end;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 5rem 5rem 5rem;
+  grid-template-rows: 2rem 5rem 2rem;
   justify-items: center;
   font-size: 0.9rem;
   align-self: center;
@@ -98,50 +80,10 @@ const Wrapper = styled.div`
     justify-self: start;
   }
 
-  /* @media only screen and (max-width: ${sizes.small}) {
-    grid-column: 1/2;
-  } */
-
   .margin {
     margin-top: 5rem;
   }
-  .answer-right {
-    background-color: var(--green-light);
-    div {
-      color: var(--green-light);
-    }
-  }
-  .answer-wrong {
-    background-color: var(--red-light);
 
-    div {
-      color: var(--red-light);
-    }
-  }
-
-  .answer-box {
-    display: grid;
-    visibility: visible;
-    opacity: 1;
-    transition: all 2s;
-    grid-column: 1/4;
-    align-self: center;
-    width: 60%;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-    border-radius: var(--borderRadius);
-  }
-  .check-box {
-    grid-column: 1 / 4;
-    align-self: center;
-    justify-self: center;
-  }
-  .check-box-right {
-    color: var(--green-dark);
-  }
-  .check-box-wrong {
-    color: var(--red-dark);
-  }
   .find-country {
     grid-column: 1/4;
     line-height: 1.2rem;
@@ -152,15 +94,12 @@ const Wrapper = styled.div`
   .my-flag {
     justify-self: center;
     align-self: center;
-
-    /* width: 100%; */
-
     max-width: 9rem;
     min-width: 5.5rem;
     width: 70%;
     height: 4.7rem;
-    margin: 10px 0;
     grid-column: 1/4;
+    grid-row: 2/3;
     padding: 0;
   }
   .country-btn-container {

@@ -1,4 +1,8 @@
-import { faClock, faGlobeAsia } from "@fortawesome/free-solid-svg-icons";
+import {
+  faClock,
+  faGlobeAsia,
+  faLocation,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export const modes = [
   {
@@ -6,12 +10,15 @@ export const modes = [
     icon: <FontAwesomeIcon fontSize="30px" icon={faGlobeAsia} />,
     description:
       "the classic game mode! find all countries using information displayed.",
+    mode: "countries",
   },
-  // {
-  //   name: "time rush",
-  //   icon: <FontAwesomeIcon fontSize="30px" icon={faClock} />,
-  //   description: "race against time and aim for a personal record.",
-  // },
+
+  {
+    name: "Find The Capital",
+    icon: <FontAwesomeIcon fontSize="30px" icon={faLocation} />,
+    description: "an advanced mode, find the capital city on the map.",
+    mode: "capitals",
+  },
 ];
 
 const constants = () => {

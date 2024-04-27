@@ -1,11 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useGlobalContext } from "../context/context";
-const Mode = ({ modeName, modeIcon, modeDescription, modeLink }) => {
+const Mode = ({ modeName, modeIcon, modeDescription, mode }) => {
+  const { setMode } = useGlobalContext();
   return (
     <Wrapper>
-      <Link to="/modes/time" className="modeLink">
+      <Link
+        to="/modes/time"
+        className="modeLink"
+        onClick={() => {
+          setMode(mode);
+          localStorage.setItem("mode", `${mode}`);
+        }}
+      >
         <div className="modeTitle">
           <h2 className="modeName">{modeName}</h2>
           {modeIcon}
@@ -17,9 +25,6 @@ const Mode = ({ modeName, modeIcon, modeDescription, modeLink }) => {
 };
 
 const Wrapper = styled.div`
-  /* display: flex;
-  align-items: center; */
-  /* justify-content: center; */
   text-align: center;
   border: solid var(--white) 1px;
   border-radius: var(--borderRadius);
@@ -27,14 +32,14 @@ const Wrapper = styled.div`
   padding-bottom: 3px;
   cursor: pointer;
   transition: all 0.3s;
-  ${({ themeOption, theme }) => {
+  ${({ theme }) => {
     return {
       borderColor: theme.font,
     };
   }}
 
   .modeLink {
-    ${({ themeOption, theme }) => {
+    ${({ theme }) => {
       return {
         backgroundColor: theme.background,
         color: theme.font,
@@ -49,7 +54,7 @@ const Wrapper = styled.div`
 
   &:hover {
     background-color: var(--grey-800);
-    ${({ themeOption, theme }) => {
+    ${({ theme }) => {
       return {
         backgroundColor: theme.hover,
       };
@@ -66,7 +71,6 @@ const Wrapper = styled.div`
   }
 
   .modeDescription {
-    /* margin-left: 5rem; */
     width: 30rem;
     margin-top: 1.5rem;
   }

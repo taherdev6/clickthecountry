@@ -5,13 +5,15 @@ const GlobalContext = createContext();
 export const useGlobalContext = () => useContext(GlobalContext);
 
 const AppContext = ({ children }) => {
-  const [theme, setTheme] = useState("default");
+  const [theme, setTheme] = useState(
+    localStorage.getItem("theme") || "default"
+  );
   const [themeColors, setThemeColors] = useState("");
-  const styleOptions = {
-    default: {},
-    light: {},
-    dark: {},
-  };
+
+  const storedMode = localStorage.getItem("mode");
+
+  const [mode, setMode] = useState(storedMode ? storedMode : "");
+
   const [page, setPage] = useState("home");
   const [country, setCountry] = useState("");
   const [countryAnswered, setCountryAnswered] = useState([]);
@@ -38,6 +40,10 @@ const AppContext = ({ children }) => {
     const country = countryArr[Math.floor(Math.random() * countryArr.length)];
     return country;
   };
+
+  useEffect(() => {
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   useEffect(() => {
     if (page !== "quiz") {
@@ -75,7 +81,8 @@ const AppContext = ({ children }) => {
             return {
               cca3: country.cca3,
               name: country.name.common,
-              capital: country.capital[0],
+              capital:
+                country.cca3 === "PSE" ? "jerusalem" : country.capital[0],
               language: languages[0],
               flag,
             };
@@ -128,6 +135,8 @@ const AppContext = ({ children }) => {
         setTimer,
         themeColors,
         setThemeColors,
+        mode,
+        setMode,
       }}
     >
       {children}

@@ -17,6 +17,7 @@ const Modes = () => {
             modeName={mode.name}
             modeIcon={mode.icon}
             modeDescription={mode.description}
+            mode={mode.mode}
             key={i}
           />
         );
